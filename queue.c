@@ -1,84 +1,96 @@
 #include <stdio.h>
-#define MAX 64
+#define MAX_QUEUE_LEN 64
 
 typedef struct {
-    int arr[MAX];
-    int front;
-    int rear;
-} Queue;
+    int value[MAX_QUEUE_LEN];
+    int head;
+    int tail;
+} rq_t;
 
-void init(Queue *q) {
-    q->front = 0;
-    q->rear = 0;
-}
-
-int enqueue(Queue *q, int num) {
-    int next = (q->rear + 1) % MAX;
-    if (next == q->front) {
-        printf("Queue Full! Can't add %d\n", num);
-        return -1;
-    }
-    q->arr[q->rear] = num;
-    q->rear = next;
+int rq_init(rq_t *q) {
+    q->head = 0;
+    q->tail = 0;
     return 0;
 }
 
-int dequeue(Queue *q, int *num) {
-    if (q->front == q->rear) {
-        printf("Queue Empty!\n");
-        return -1;
+int rq_enqueue(rq_t *q, int value) {
+    int next_tail = (q->tail + 1) % MAX_QUEUE_LEN;
+    if (next_tail == q->head) {
+        return -1; 
     }
-    *num = q->arr[q->front];
-    q->front = (q->front + 1) % MAX;
+    q->value[q->tail] = value;
+    q->tail = next_tail;
     return 0;
 }
 
-void display(Queue *q) {
-    if (q->front == q->rear) {
-        printf("Queue is empty\n");
+int rq_dequeue(rq_t *q, int *value) {
+    if (q->head == q->tail) {
+        return -1;
+    }
+    *value = q->value[q->head];
+    q->head = (q->head + 1) % MAX_QUEUE_LEN;
+    return 0;
+}
+
+// Display queue elements
+void rq_display(rq_t *q) {
+    if (q->head == q->tail) {
+        printf("Queue is empty.\n");
         return;
     }
-    printf("Queue Elements: ");
-    int i = q->front;
-    while (i != q->rear) {
-        printf("%d ", q->arr[i]);
-        i = (i + 1) % MAX;
+
+    printf("Queue contents: ");
+    int i = q->head;
+    while (i != q->tail) {
+        printf("%d ", q->value[i]);
+        i = (i + 1) % MAX_QUEUE_LEN;
     }
     printf("\n");
 }
 
 int main() {
-    Queue q;
-    init(&q);
-    int ch, num;
+    rq_t q;
+    rq_init(&q);
+    int choice, val;
 
     while (1) {
-        printf("\n----- Queue Menu -----\n");
+        printf("\n---- Queue Menu ----\n");
         printf("1. Enqueue\n");
         printf("2. Dequeue\n");
-        printf("3. Display\n");
+        printf("3. Display Queue\n");
         printf("4. Exit\n");
-        printf("Choice: ");
-        scanf("%d", &ch);
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
 
-        switch (ch) {
+        switch (choice) {
             case 1:
-                printf("Enter number: ");
-                scanf("%d", &num);
-                enqueue(&q, num);
+                printf("Enter value to enqueue: ");
+                scanf("%d", &val);
+                if (rq_enqueue(&q, val) == -1) {
+                    printf("Queue is full, Cannot enqueue.\n");
+                } else {
+                    printf("Enqueued %d successfully.\n", val);
+                }
                 break;
+
             case 2:
-                if (dequeue(&q, &num) == 0)
-                    printf("Removed: %d\n", num);
+                if (rq_dequeue(&q, &val) == -1) {
+                    printf("Queue is empty, Cannot dequeue.\n");
+                } else {
+                    printf("Dequeued value: %d\n", val);
+                }
                 break;
+
             case 3:
-                display(&q);
+                rq_display(&q);
                 break;
+
             case 4:
-                printf("Exiting\n");
+                printf("Exiting program.\n");
                 return 0;
+
             default:
-                printf("Wrong choice\n");
+                printf("Invalid choice...\n");
         }
     }
 }
