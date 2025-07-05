@@ -13,7 +13,6 @@ void main() {
     printf("pa+0 = %p : *(pa+0) = %c, pa[0] = %c\n", pa+0, *(pa+0), pa[0]);
     printf("pa+1 = %p : *(pa+1) = %c, pa[1] = %c\n", pa+1, *(pa+1), pa[1]);
     printf("pa+2 = %p : *(pa+2) = %c, pa[2] = %c\n", pa+2, *(pa+2), pa[2]);
-    // printf("pa/2 = %p : *(pa/2) = %c, pa[2] = %c\n", pa/2, *(pa/2), pa[2]);
 
     printf("\nMath on int pointer!\n");
     printf("pb   = %p\n", pb);
