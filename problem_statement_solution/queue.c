@@ -58,18 +58,32 @@ void rq_display(rq_t *q) {
 int main() {
     rq_t q;
     rq_init(&q);
+    int t;
 
-    rq_enqueue(&q, 10);
-    rq_enqueue(&q, 20);
-    rq_enqueue(&q, 30);
-
-    rq_display(&q);
-
-    int val;
-    if (rq_dequeue(&q, &val) == 0)
+int choice, val; ;
+printf("Enter your choice:\n1.enqueue\n2.dequeue\n3.display\n4.exit\n");
+scanf("%d",&choice);
+while(choice!=4)
+{
+    switch(choice){
+        case 1:printf("Enter value to be inserted in queue:");
+        scanf("%d",&t);
+      rq_enqueue(&q, t);
+      break ;
+      case 2: 
+       if (rq_dequeue(&q, &val) == 0)
         printf("Dequeued: %d\n", val);
+        rq_display(&q);
+        break ;
+        case 3:rq_display(&q);
+        break ;
+        default:printf("Invalid choice\n");
 
-    rq_display(&q);
+    }
+    printf("Enter your choice:\n1.enqueue\n2.dequeue\n3.display\n4.exit\n");
+scanf("%d",&choice);
+}
+
 
     return 0;
 }
