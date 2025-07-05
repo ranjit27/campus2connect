@@ -1,0 +1,25 @@
+// Problem Statement :
+//
+// Implement a FIFO ring queue of integers using an array
+// Add code for rq_init, rq_enqueue and rq_dequeue.
+// All functions should return -1 if error occurs, otherwise 0 if successful,
+//
+// You will need to add the members to the below structure
+//
+// #define MAX_QUEUE_LEN 64
+//
+// typedef struct ring_queue
+// {
+//     /* Add memebers here */
+//
+//     int value[MAX_QUEUE_LEN];
+// } rq_t;
+//
+// /** init ring queue */
+// int rq_init(rq_t *q);
+//
+// /** Add value to the end of ring queue */
+// int rq_enqueue(rq_t *q, int value);
+//
+// /** remove value */
+// int rq_dequeue(rq_t *q, int value);
