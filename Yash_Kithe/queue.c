@@ -51,7 +51,7 @@ int main() {
     int choice, value;
     rq_init(&q);
     while (1) {
-        printf("\n====== Circular Queue Menu ======\n");
+        printf("\nCircular Queue Menu\n");
         printf("1. Enqueue\n");
         printf("2. Dequeue\n");
         printf("3. Display Queue\n");
