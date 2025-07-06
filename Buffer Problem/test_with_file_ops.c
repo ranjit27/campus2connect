@@ -45,18 +45,19 @@ struct fixed_buff* fixed_buff_alloc(void) {
     return (struct fixed_buff*) malloc(sizeof(struct fixed_buff));
 }
 
+//the logic to split data into 32byte chunks is in build_fixed_buff_list,
+//this function will always be called twice, first call returns the length
+//of the stream and the second call always returns null to indicate end
 uint8_t* stream_get(struct stream *s, unsigned int *data_len) {
-    if (s->offset >= s->size) {
+    if (s->offset >= s->size) { //end of stream returns null as mentioned
         return NULL;
     }
-
     unsigned int remaining = s->size - s->offset;
     *data_len = remaining;
-
-    uint8_t *data = (uint8_t *)(s->data + s->offset);
     s->offset = s->size;
-    return data;
+    return s->data;
 }
+
 struct fixed_buff* build_fixed_buff_list(struct stream *s)
 {
     uint8_t* curr_data;
