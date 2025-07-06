@@ -14,7 +14,7 @@ int main() {
 
     // Creating file using fopen()
     // with access mode "w"
-    fptr = fopen("Buffer Problem/Practice Codes/file.txt", "w");
+    fptr = fopen("Buffer Problem/file.txt", "w");
 
     // Checking if the file is created
     if (fptr == NULL)
