@@ -49,24 +49,30 @@ struct fixed_buff* fixed_buff_alloc(void) {
 //this function will always be called twice, first call returns the length
 //of the stream and the second call always returns null to indicate end
 uint8_t* stream_get(struct stream *s, unsigned int *data_len) {
+    FILE* fptr = fopen("output.txt", "a");
     if (s->offset >= s->size) { //end of stream returns null as mentioned
+        fputs("\nSecond call, returns NULL to indicate end", fptr);
         return NULL;
     }
+
+    fputs("\nFirst call to stream_get, returns length of stream", fptr);
     unsigned int remaining = s->size - s->offset;
     *data_len = remaining;
     s->offset = s->size;
-    return s->data;
+    return (uint8_t*)s->data;;
 }
 
 struct fixed_buff* build_fixed_buff_list(struct stream *s)
 {
+    FILE* fptr = fopen("output.txt", "a");
     uint8_t* curr_data;
     struct fixed_buff *read = NULL, *write = NULL;
     unsigned int curr_data_len;
     while ((curr_data = stream_get(s, &curr_data_len)))
     {
+        fputs("\nSplitting logic and list builder called", fptr);
         int buffer_counter = 0;
-        int copy_len = FIXED_BUFF_LEN;
+        unsigned int copy_len = FIXED_BUFF_LEN;
         while (curr_data_len) {
             struct fixed_buff *node = fixed_buff_alloc();
             if (curr_data_len < FIXED_BUFF_LEN) {
@@ -75,18 +81,21 @@ struct fixed_buff* build_fixed_buff_list(struct stream *s)
             for (unsigned int i = 0; i < copy_len; i++) {
                 node->data[i] = curr_data[i + buffer_counter];
             }
+            fputs("\nData added", fptr);
             node->data_len = copy_len;
             node->next = NULL;
 
-            if (read == NULL) {
+            if (read == NULL) { //i used read/write instead of head/tail because i found the logic more intuitive
                 read = node;
             }
             else {
                 write->next = node;
             }
+            fputs("\nRW head updated", fptr);
             write = node;
             buffer_counter += copy_len;
             curr_data_len -= copy_len;
+            fputs("\nNode done", fptr);
         }
     }
     return read;
@@ -97,20 +106,36 @@ int main() {
     //char *input = "ABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBACCCCCCCCC"; //32 + 9bytes
     //char *input = "ABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBACCCCCCCCC"; //32*3 + 9bytes so 4 buffers
     char *input = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBCCCCCC"; //email test case 50+20+6
+    FILE* fptr = fopen("output.txt", "w");
+    if (!fptr) {
+        perror("Failed to open file");
+        return -1;
+    }
+    if (!fptr) {
+        printf("Could not open file\n");
+    }
+    fputs("\nInput: ", fptr);
+    fputs(input, fptr);
+    fputc('\n', fptr);
+
     struct stream s = {
         .data = (const uint8_t*)input,
         .size = strlen(input),
         .offset = 0
     };
-
+    fputs("Output: ", fptr);
     struct fixed_buff *result = build_fixed_buff_list(&s);
     while (result) {
         for (unsigned int i = 0; i < result->data_len; ++i) {
             printf("%c", result->data[i]);
         }
+
+        fwrite(result->data, 1, result->data_len, fptr);
         printf("\n");
         result = result->next;
     }
+    fclose(fptr);
+
 
     return 0;
 }
