@@ -1,0 +1,7 @@
+Node 1: 32 bytes: 01234567890123456789012345678901
+Node 2: 32 bytes: 23456789012345678901234567890123
+Node 3: 6 bytes: 456789
+
+Total nodes: 3
+Calls to stream_get: 2
+SUCCESS: All buffers correct
