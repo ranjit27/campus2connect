@@ -1,0 +1,5 @@
+Buffer 1 (32 bytes): Appleyyynacherryyyiesmangopiness
+Buffer 2 (7 bytes): yruesry
+Buffer 3 (22 bytes): rmonyagslachlycheeeeck
+
+Writing Finished.
