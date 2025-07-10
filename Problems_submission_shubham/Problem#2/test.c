@@ -11,7 +11,7 @@ struct fixed_buff {
     struct fixed_buff *next;
 };
 
-struct stream { int call_count; };
+struct stream { int call_count; FILE *fp; };
 
 extern struct fixed_buff* fixed_buff_alloc(void);
 extern uint8_t* stream_get(struct stream *s, unsigned int *data_len);
@@ -27,11 +27,28 @@ void print_node(FILE *f, struct fixed_buff *node, int idx) {
     fprintf(f, "\n");
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
+        fprintf(stderr, "Usage: %s <input_file>\n", argv[0]);
+        return 1;
+    }
+
+    FILE *input = fopen(argv[1], "r");
+    if (!input) {
+        perror("Failed to open input file");
+        return 1;
+    }
+
+
     FILE *f = fopen("output_log.txt", "w");
-    if (!f) return 1;
+    if (!f) {
+        fclose(input);
+        return 1;
+    }
 
     struct stream s = {0};
+    s.fp = input;
+
     struct fixed_buff *list = build_fixed_buff_list(&s);
     if (!list) {
         fprintf(f, "No data processed.\n");
@@ -54,6 +71,7 @@ int main() {
     if (valid) fprintf(f, "SUCCESS: All buffers correct\n");
     else fprintf(f, "ERROR: One or more buffers not 32 bytes\n");
 
+    fclose(input);
     fclose(f);
     return valid ? 0 : 1;
 }
