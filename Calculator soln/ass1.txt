@@ -1,0 +1,60 @@
+#include <stdio.h>
+
+double add(double a, double b) { return a + b; }
+double subtract(double a, double b) { return a - b; }
+double multiply(double a, double b) { return a * b; }
+double divide(double a, double b) {
+    if (b == 0) {
+        printf("cannot divide by zero!\n");
+        return 0.0;
+    }
+    return a / b;
+}
+
+typedef double (*oper_func)(double, double);
+
+oper_func get_operation(char operator) {
+    switch (operator) {
+        case '+': return add;
+        case '-': return subtract;
+        case '*': return multiply;
+        case '/': return divide;
+        default: return NULL;
+    }
+}
+
+int main() {
+    double first, second, result;
+    char operator;
+    char choice;
+
+    printf("Hello! This is your simple calculator.\n");
+
+    do {
+        printf("Enter first number: ");
+        scanf("%lf", &first);
+
+        printf("Enter second number: ");
+        scanf("%lf", &second);
+
+        printf("Enter operator (+, -, *, /): ");
+        scanf(" %c", &operator);
+
+        oper_func op = get_operation(operator);
+
+        if (op != NULL) {
+            result = op(first, second);
+            printf("Result: %.2lf\n", result);
+        } else {
+            printf("Invalid operator. Use +, -, *, or /.\n");
+        }
+
+        printf("Do you want to try again? (y/n): ");
+        scanf(" %c", &choice);
+
+    } while (choice == 'y' || choice == 'Y');
+
+    printf("Thanks for using the simple calculator. Bye!\n");
+
+    return 0;
+}

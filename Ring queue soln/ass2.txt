@@ -1,0 +1,79 @@
+#include <stdio.h>
+#define MAX_QUEUE_LEN 64
+
+typedef struct ring_queue {
+    int value[MAX_QUEUE_LEN];
+    int front;
+    int rear;
+    int size;
+} rq_t;
+
+int rq_init(rq_t *q) {
+    if (!q) {
+        return -1;
+    }
+    q->front = 0;
+    q->rear = 0;
+    q->size = 0;
+    return 0;
+}
+
+int rq_enqueue(rq_t *q, int val) {
+    if (!q || q->size == MAX_QUEUE_LEN) {
+        return -1; 
+    } 
+    q->value[q->rear] = val;
+    q->rear = (q->rear + 1) % MAX_QUEUE_LEN;
+    q->size++;
+    return 0;
+}
+
+int rq_dequeue(rq_t *q, int *val) {
+    if (!q || q->size == 0) {
+        return -1; 
+    }
+    *val = q->value[q->front];
+    q->front = (q->front + 1) % MAX_QUEUE_LEN;
+    q->size--;
+    return 0;
+}
+
+void rq_display(rq_t *q) {
+    if (!q || q->size == 0) {
+        printf("queue is empty\n");
+        return;
+    }
+    printf("queue: ");
+    int i, idx = q->front;
+    for (i = 0; i < q->size; i++) {
+        printf("%d ", q->value[idx]);
+        idx = (idx + 1) % MAX_QUEUE_LEN;
+    }
+    printf("\n");
+}
+
+int main() {
+    rq_t q;
+    rq_init(&q);
+    int ch, val;
+
+    while (1) {
+        printf("\n1.enque  2.deque  3.display  4.exit\n> ");
+        scanf("%d", &ch);
+        if (ch == 1) {
+            printf("value is : ");
+            scanf("%d", &val);
+            printf(rq_enqueue(&q, val) ? "if queue full\n" : " else enque\n");
+        } else if (ch == 2) {
+            printf(rq_dequeue(&q, &val) ? "if queue empty\n" : (printf("else deque : %d\n", val), ""));
+        } else if (ch == 3) {
+            rq_display(&q);
+        } else if (ch == 4) {
+            break;
+        } else {
+            printf("Invalid choice\n");
+        }
+    }
+
+    return 0;
+}
