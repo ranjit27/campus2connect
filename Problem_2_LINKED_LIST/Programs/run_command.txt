@@ -1,0 +1,2 @@
+gcc buff_list.c test.c -o test
+./test
