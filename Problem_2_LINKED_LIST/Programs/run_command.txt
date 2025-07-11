@@ -1,0 +1,3 @@
+1. compile ---> gcc buff_list.c test.c -o test
+
+2. run ----> ./test input.bin
