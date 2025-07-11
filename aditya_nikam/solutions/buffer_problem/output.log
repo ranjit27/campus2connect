@@ -1,0 +1,15 @@
+FIXED BUFFER TEST LOG
+Test case 1
+Result: 3 buffers, 70 total bytes
+Test case 1 passed
+-----------------------------------
+Test case 2
+Result: 1 buffers, 32 total bytes
+Test case 2 passed
+-----------------------------------
+Test case 3
+Result: 1 buffers, 10 total bytes
+Test case 3 passed
+-----------------------------------
+Test case 4
+Test case 4 passed
