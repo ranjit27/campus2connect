@@ -1,0 +1,5 @@
+Buffer 1: 32 bytes
+Buffer 2: 32 bytes
+Buffer 3: 32 bytes
+Buffer 4: 4 bytes
+Total: 4 buffers
