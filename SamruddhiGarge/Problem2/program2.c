@@ -21,7 +21,7 @@ struct stream
 
 // Simulated ip data
 const char *line1 = "Appleyyynacherryyyiesmangopinessyruesry";
-const char *line2 = "rmonyagslachlycheeeeck";
+const char *line2 = "rmonyagslachlycheeeeckchekfilecheckop";
 
 //  reading from stream
 uint8_t* stream_get(struct stream *s, int *len)
