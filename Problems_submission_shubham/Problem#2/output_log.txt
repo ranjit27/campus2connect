@@ -1,0 +1,8 @@
+Node 1: 32 bytes: ABCDEFGHIJKLMNOPQRSTUVWXYZ123456
+Node 2: 32 bytes: ABCDEFGHIJKLMNOPQRSTUVWXYZ123456
+Node 3: 32 bytes: ABCDEFGHIJKLMNOPQRSTUVWXYZ123456
+Node 4: 4 bytes: 1234
+
+Total nodes: 4
+Calls to stream_get: 3
+SUCCESS: All buffers correct
